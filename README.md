@@ -5,7 +5,7 @@ I built a system that watches an Azure subscription's spend, emails the owner at
  
 [Watch the project walkthrough](VIDEO_LINK_HERE)
  
-> **Pending.** The video has not been recorded yet. Replace the link above and delete this note when it is.
+> **Pending.** The video has not been recorded yet. Replace the link above and delete this note when it is
  
 ---
  
@@ -220,6 +220,8 @@ Keep only the rows you actually hit. From the course file, these are the likely 
 ---
  
 **Author:** Manuel Yannick Armah
+
+**Time:**
  
 **Project:** Azure Cost Visibility Dashboard with Terraform
  
