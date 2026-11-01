@@ -209,7 +209,7 @@ Keep only the rows you actually hit. From the course file, these are the likely 
 - Know your spend before you optimize it.
 - Alerts need a test path. A budget alert may not fire for days, so test the notification channel directly.
 - Cost data is delayed, so alerts are early warnings, not real-time controls.
-- `[ADD ONE LESSON FROM YOUR OWN BUILD]`
+- 
 ---
  
 ## Reference
