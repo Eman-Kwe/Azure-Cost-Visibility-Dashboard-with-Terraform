@@ -76,18 +76,9 @@ cost-dashboard-001/
 ---
  
 ## Architecture Diagram
- 
-```text
-Resource group  rg-cost-dashboard-<name>
- ├── Log Analytics workspace  <──  Diagnostic setting (subscription activity log)
- │        └── queried by the Workbook "Cost Dashboard"
- ├── Action Group (email)     <──  referenced by the Budget
- └── Logic App  [HTTP request trigger → Gmail send email]   (steps built in the portal)
 
-Subscription level
- ├── Budget  $10 / month, alerts at 25%, 50%, 100% of actual spend
- └── Diagnostic setting: Administrative, Security, Alert, Policy logs → workspace
-```
+<img width="1536" height="1024" alt="Azure Cost Visibility Dashboard Flow" src="https://github.com/user-attachments/assets/099953fc-bb5f-49b8-9bbc-7150705c0207" />
+
  
 ### How it works
  
