@@ -3,9 +3,8 @@ I built a system that watches an Azure subscription's spend, emails the owner at
  
 ### 🎬 Video Walkthrough
  
-[Watch the project walkthrough](VIDEO_LINK_HERE)
+[Watch the project walkthrough](https://www.loom.com/share/67deff8d831b44449d8ab792ebd8b754)
  
-> **Pending.** The video has not been recorded yet. Replace the link above and delete this note when it is
  
 ---
  
