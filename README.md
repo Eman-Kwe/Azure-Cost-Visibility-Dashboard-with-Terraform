@@ -74,11 +74,9 @@ cost-dashboard-001/
  
 ---
  
-## Architecture Diagram
+## Architecture 
+<img width="1536" height="1024" alt="Azure Cost Visibility Dashboard with Terraform" src="https://github.com/user-attachments/assets/e22d9bf3-d8f6-444b-83dc-d21f5d89611c" />
 
-<img width="1536" height="1024" alt="Azure Cost Visibility Dashboard Flow" src="https://github.com/user-attachments/assets/099953fc-bb5f-49b8-9bbc-7150705c0207" />
-
- 
 ### How it works
  
 1. **Budget.** A $10 monthly budget watches the subscription's actual spend.
