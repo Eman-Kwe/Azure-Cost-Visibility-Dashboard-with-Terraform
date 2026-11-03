@@ -15,7 +15,7 @@ I built a system that watches an Azure subscription's spend, emails the owner at
 | **What I built** | A monthly $10 budget with alerts at 25%, 50% and 100% ($2.50, $5 and $10), an email Action Group, a Logic App that sends a formatted alert email, a Log Analytics workspace, and an Azure Workbook |
 | **Proof it works** | `terraform apply` created 6 resources, a second `terraform plan` reported "No changes", the Logic App sent a test email, and the Action Group test notification succeeded (screenshots 02, 04, 06, 12, 13) |
 | **Cost to run** | `[FILL IN from Cost Management after teardown]` |
-| **Cleanup** | `[FILL IN: terraform destroy output, resource group gone]` |
+| **Cleanup** | Verified: `terraform destroy` removed the Terraform-built resources, I deleted the two portal-made items first (Gmail connection and Workbook), and only Azure's own `NetworkWatcherRG` is left (screenshots 15 and 16) |
 | **Tools** | Terraform, Azure Monitor, Cost Management, Logic Apps, Log Analytics, Azure Workbooks |
  
 ---
@@ -109,7 +109,7 @@ cost-dashboard-001/
 |---|---|
 | Azure subscription (active, Owner or Contributor) | Pay-as-you-go |
 | Terraform | 1.16.6 (azurerm provider 4.81.0) |
-| Azure CLI | `[FILL IN: az --version]` |
+| Azure CLI | 2.90.0 |
 | An email address for alerts | any |
  
 **Time and cost:** about 3 - 4 hours. Cost: `[FILL IN]`.
@@ -211,10 +211,26 @@ Both budgets as shown at the subscription scope:
 ![budgets at subscription scope](images/14-budgets-subscription.png)
  
 ### Step 9: Tear everything down
+The first `terraform destroy` removed the Logic App, budget, Action Group, workspace and diagnostic setting, then **stopped at the resource group**: *"the Resource Group still contains Resources."* Terraform refuses to delete a group that holds things it did not create, and the Gmail connection and the Workbook were made in the portal. I deleted those two first:
+ 
 ```bash
-terraform destroy
+az resource delete -g rg-cost-dashboard-<name> --resource-type Microsoft.Web/connections -n gmail
+az resource delete -g rg-cost-dashboard-<name> --resource-type microsoft.insights/workbooks -n <workbook-id>
+terraform destroy -auto-approve -no-color
 ```
-`[SCREENSHOT: destroy complete]` Then confirm the resource group is gone in the portal.
+ 
+The second destroy finished with no errors:
+ 
+![destroy complete](images/15-destroy-complete.png)
+ 
+Then I checked instead of assuming. Only `NetworkWatcherRG`, which Azure creates by itself, is left, and Terraform's state is empty:
+ 
+```bash
+az group list --query "[].name" -o tsv
+terraform state list
+```
+ 
+![teardown verified](images/16-teardown-verified.png)
  
 ---
  
@@ -229,7 +245,7 @@ terraform destroy
 | Log Analytics workspace exists | ✅ Done |
 | Workbook saved | ✅ Done |
 | Test notification received | ✅ Done (Logic App email and Action Group test) |
-| Teardown verified | `[ ]` Not done yet |
+| Teardown verified | ✅ Done (only `NetworkWatcherRG` left, state empty, screenshots 15 and 16) |
  
 ---
  
@@ -257,6 +273,8 @@ terraform destroy
 | Workbook query fails | The word `kusto` was copied from a code block label | Start the query at `AzureActivity` |
 | Budget not visible in Cost Management | Wrong scope. Billing account, subscription and resource group show different budgets | Change scope to the subscription |
 | Action Group test fails ("problem completing this test") | Email receiver still **Pending** verification | Resend the verification email, confirm it, retest |
+| `terraform destroy` stops with "the Resource Group still contains Resources" | The Gmail connection and Workbook were created in the portal, so Terraform does not own them and will not delete the group around them | Delete those two with `az resource delete`, then run destroy again |
+| `terraform destroy` seemed to finish but resources were left | I filtered the output with `grep` and it hid the error message | Send the output to a log file and read it, or check with `terraform state list` |
  
 ---
  
@@ -267,10 +285,11 @@ terraform destroy
 - Cost data is delayed, so alerts are early warnings, not real-time controls.
 - Read the plan before every apply. It caught a wrong budget amount and a change that would have deleted the email connection.
 - Mixing portal edits with Terraform creates drift. Decide which tool owns what.
+- Anything made in the portal has to be deleted by hand before `terraform destroy` can remove the resource group. Verify the teardown instead of trusting the last line of output, and do not filter away error messages.
  
 ### What I would do next
  
-- Define the Logic App trigger, connection and action in Terraform so nothing depends on the portal.
+- Define the Logic App trigger, the Gmail connection and the Workbook in Terraform so nothing depends on the portal, and teardown is one command.
 - Wire the Action Group to call the Logic App.
 - Export Cost Management data to the workspace and chart dollars, not only activity.
 - Use remote state with locking, and a pipeline that runs `plan` on pull requests.
