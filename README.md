@@ -14,7 +14,7 @@ I built a system that watches an Azure subscription's spend, emails the owner at
 |---|---|
 | **What I built** | A monthly $10 budget with alerts at 25%, 50% and 100% ($2.50, $5 and $10), an email Action Group, a Logic App that sends a formatted alert email, a Log Analytics workspace, and an Azure Workbook |
 | **Proof it works** | `terraform apply` created 6 resources, a second `terraform plan` reported "No changes", the Logic App sent a test email, and the Action Group test notification succeeded (screenshots 02, 04, 06, 12, 13) |
-| **Cost to run** | `[FILL IN from Cost Management after teardown]` |
+| **Cost to run** | Less than $0.01 in total (Azure Cost Management, Oct 31 - Nov 6, 2026). Only Logic Apps showed a charge, Azure Monitor was $0.00 |
 | **Cleanup** | Verified: `terraform destroy` removed the Terraform-built resources, I deleted the two portal-made items first (Gmail connection and Workbook), and only Azure's own `NetworkWatcherRG` is left (screenshots 15 and 16) |
 | **Tools** | Terraform, Azure Monitor, Cost Management, Logic Apps, Log Analytics, Azure Workbooks |
  
@@ -110,7 +110,7 @@ cost-dashboard-001/
 | Azure CLI | 2.90.0 |
 | An email address for alerts | any |
  
-**Time and cost:** about 3 - 4 hours. Cost: `[FILL IN]`.
+**Time and cost:** about 3 - 4 hours. Cost: less than $0.01.
  
 ---
  
