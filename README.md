@@ -244,6 +244,9 @@ terraform state list
 | Workbook saved | ✅ Done |
 | Test notification received | ✅ Done (Logic App email and Action Group test) |
 | Teardown verified | ✅ Done (only `NetworkWatcherRG` left, state empty, screenshots 15 and 16) |
+| Cost to run | ✅ Done (less than $0.01, Logic Apps only, screenshot 17) |
+
+![Cost analysis, Oct 31 - Nov 6](images/17-cost-analysis.png)
  
 ---
  
